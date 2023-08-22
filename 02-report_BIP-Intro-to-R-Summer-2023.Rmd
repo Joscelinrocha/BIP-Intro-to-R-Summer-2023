@@ -47,11 +47,11 @@ The variables exported from the googlesheet are too long and we need to `rename(
 #let's clean the variables names using the package `janitor()
 
 data <- data %>%
-  janitor::clean_names()
+  clean_names()
 
 ## You can run this code to get the column names so it is easier to copy and paste 
 ## them when changing them
-#colnames(data)  
+colnames(data)  
 
 
 data <- data %>%
@@ -116,9 +116,9 @@ For this task we will use the following functions:
 # 
 # ## or...
 # 
-# data %>%
-#   group_by(gender, age_group) %>%
-#   count()
+data %>%
+  group_by(gender, age_group) %>%
+  count()
 
 ##***extra: we can make a pdf ready table using the package gt
 library(gt)
@@ -126,7 +126,7 @@ data %>%
   group_by(gender, age_group) %>%
   count() %>%
   ungroup() %>%
-  gt
+  gt()
 ```
 
 ## Let's count the number of people grouped by age and gender BUT only for Latinx/e/a/o people
@@ -165,9 +165,9 @@ We were very lenient with this question and we gave no parameters on how people 
 ```{r}
 
 # ## let's explore the variable first so we can come up with a plan
-# data %>%
-#   select(state) %>%
-#   unique()
+data %>%
+  select(state) %>%
+  unique()
 
 ## let's execute the plan
 
@@ -184,7 +184,8 @@ data <- data %>%
     state == "Nevada" ~ "NV",
     state == "Massachusetts" ~ "MA",
     state == "Minnesota" ~ "MN",
-    state %in% c("Ontario canada","United States","Depression","Sindh","Haryana") ~ NA_character_,
+    state == "Pennsylvania" ~"PA",
+    state %in% c("Ontario canada","United States","Depression","Sindh","Haryana","	Telangana, India") ~ NA_character_,
     TRUE ~ state
   ))
 
@@ -257,7 +258,7 @@ ggplot is based on the "grammar of graphics." A regular graph would normally nee
 
 1. A dataset
 
-2. A coordinate system : describes how data coordinates are mapped to the plane of the graphic. Provides axis and grid lines to help read the graph. [the cartesian coordinate system is the default one]
+2. A coordinate system: describes how data coordinates are mapped to the plane of the graphic. Provides axis and grid lines to help read the graph. [the cartesian coordinate system is the default one]
 
 3. Geoms: this refers to what you actually see in the plot such as points, lines, polygons, bars, etc.
 
