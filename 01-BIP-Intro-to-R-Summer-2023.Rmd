@@ -159,7 +159,7 @@ Besides the intuitiveness of this language, there is also a great community of f
 
 Interactive Development Environment (IDE)
 
-![:scale 50%](images/rstudio.png)
+![:scale 50%](images/RStudio.png)
 
 You can think of RStudio as a sophisticated text editor for writing R code. You can run RStudio on Mac, Windows, or on a server.
 ]
