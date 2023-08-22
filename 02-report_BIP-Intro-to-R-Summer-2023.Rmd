@@ -1,0 +1,309 @@
+---
+title: "BIP Summer-Intro to R Workshop Activity"
+author: "Joscelin Rocha-Hidalgo"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message=FALSE, warning=FALSE)
+```
+
+I am super excited to walk you through our activity report while I show you how you can use some functions and even create some basic visualizations!
+
+## How did I choose the questions?
+
+You may be wondering why I asked you the questions you saw in the online survey. I am a developmental scientist and most of my current research is with children between the ages of 4 and 6 years. Some of them helped me come up with some of the "funner" questions such as the ones asking about superpowers. And of course, I also chose some questions that could give me some variability of responses and one that is very poorly stated so we can do some data cleaning on its content.
+
+## Let's load some packages
+
+For the purposes of this workshop, most of our functions will come from packages part of the bigger package called *"Tidyverse"*.
+
+```{r}
+#Load the `tidyverse` package. 
+library(tidyverse)
+
+#Load the `janitor` package.
+library(janitor)
+```
+
+## Let's import our dataset
+
+In theory, we could have imported the googlesheets directly to R (definitely possible!) but for simplicity and lack of time, I downloaded the responses as a csv and saved them to our repo under the "data" folder.
+
+```{r }
+#Import the data.csv file into R and assign it to an object called "data"
+#FYI: you could have called it anything!
+data <- read_csv("data/data.csv")
+
+#After you run it, check the environment panel. It should be saved there!
+```
+
+## Let's clean & rename the variables
+
+The variables exported from the googlesheet are too long and we need to `rename()` them to shorter ones.
+
+```{r}
+#let's clean the variables names using the package `janitor()
+
+data <- data %>%
+  janitor::clean_names()
+
+## You can run this code to get the column names so it is easier to copy and paste 
+## them when changing them
+#colnames(data)  
+
+
+data <- data %>%
+  rename( "books_2023" = "how_many_books_have_you_read_so_far_this_2023",
+          "enjoy_cooking" = "on_a_scale_of_1_to_10_how_much_do_you_enjoy_cooking",
+          "hrs_sleep" = "how_many_hours_of_sleep_do_you_get_on_average_per_night",
+          "superpower" = "which_superpower_would_you_choose",
+          "chosen_weekend_activity" = "if_traveling_was_not_an_issue_you_can_teleport_anywhere_in_a_blink_what_would_be_your_preferred_way_to_spend_a_free_weekend",
+          "least_fav_movie" = "whats_your_least_favorite_type_of_movie",
+          "age_group" = "what_is_your_age_group",
+          "gender" = "what_is_your_gender",
+          "state" = "which_state_do_you_currently_reside_in",
+          "race" = "what_is_your_racial_background",
+          "latin_status" = "are_you_latino_a_e_x"  )
+
+```
+
+## Let's separate the demo questions and the "fun" questions into 2 new dataframes
+
+To separate the demo questions and the fun questions into 2 separate dfs, we will use the function `select()`.
+
+1.  Assign the fun questions to a df called "fun_data"
+
+2.  Assign the demo question to a df called "demo_data"
+
+```{r}
+# # you can list them one by one
+# data %>%
+#   select(age_group,race)
+# 
+# #another way:
+# data %>%
+#   select(age_group:latin_status)
+# 
+# #another way
+# data %>%
+#   select(age_group:last_col())
+
+##################
+
+#create the df called "demo_data"
+fun_data <- data %>%
+  select(-c(timestamp,age_group:latin_status))
+
+#create the df called "demo_data"
+demo_data <- data %>%
+  select(age_group:latin_status)
+```
+
+## Let's count the number of people grouped by age and gender
+
+For this task we will use the following functions:
+
+1.  group_by
+
+2.  count
+
+```{r}
+# data %>%
+#   group_by(age_group,gender) %>%
+#   count()
+# 
+# ## or...
+# 
+# data %>%
+#   group_by(gender, age_group) %>%
+#   count()
+
+##***extra: we can make a pdf ready table using the package gt
+library(gt)
+data %>%
+  group_by(gender, age_group) %>%
+  count() %>%
+  ungroup() %>%
+  gt
+```
+
+## Let's count the number of people grouped by age and gender BUT only for Latinx/e/a/o people
+
+For this task we will use the following functions:
+
+1.  filter
+
+2.  group_by
+
+3.  count
+
+4.  We can use `<`, `>`, `<=`, `>=`, `==`, `!=`
+
+```{r}
+data %>%
+  filter(latin_status == "Yes") %>%
+  group_by(gender, age_group) %>%
+  count() %>%
+  ungroup() %>%
+  gt
+```
+
+## Let's clean the `state` variable & count the responses
+
+We were very lenient with this question and we gave no parameters on how people should answer it so we received some responses that matched our original expectation but we also received very random responses. Let's clean some of those
+
+1.  select
+
+2.  mutate
+
+3.  case_when
+
+4.  %in%
+
+```{r}
+
+# ## let's explore the variable first so we can come up with a plan
+# data %>%
+#   select(state) %>%
+#   unique()
+
+## let's execute the plan
+
+data <- data %>%
+  mutate(state_new = case_when(
+    state == "California" ~ "CA",
+    state == "Arizona" ~ "AZ",
+    state == "Alabama" ~ "AL",
+    state == "Florida" ~ "FL",
+    state == "Kentucky" ~ "KY",
+    state == "NYC" | state == "New York" ~ "NY",
+    state == "New Jersey" ~ "NJ",
+    state == "Maryland" ~ "MD",
+    state == "Nevada" ~ "NV",
+    state == "Massachusetts" ~ "MA",
+    state == "Minnesota" ~ "MN",
+    state %in% c("Ontario canada","United States","Depression","Sindh","Haryana") ~ NA_character_,
+    TRUE ~ state
+  ))
+
+data %>%
+  count(state_new) %>%
+  gt()
+
+```
+
+## Let's calculate ther sample's average and SD for the following variables:
+
+1.  Books read so far this 2023 (`books_2023`)
+
+2.  How much people enjoy cooking (`enjoy_cooking`)
+
+3.  Number of hours people sleep (`hrs_sleep`)
+
+Use the functions:
+
+1.  `select()`
+
+2.  `summarize()` or `summarise()`
+
+3.  `mean()`
+
+4.  `sd()`
+
+5.  `round()`
+
+6.  `across()`
+
+7.  `everything()`
+
+```{r}
+# 
+means_df <- data %>%
+  select(books_2023, enjoy_cooking,hrs_sleep) %>%
+  summarize(across(c(books_2023, enjoy_cooking,hrs_sleep),mean,na.rm = TRUE)) %>%
+    mutate(across(everything(), ~round(., 2)))
+
+
+# 
+sd_df <- data %>%
+  select(books_2023, enjoy_cooking,hrs_sleep) %>%
+  summarize(across(c(books_2023, enjoy_cooking,hrs_sleep),sd,na.rm = TRUE)) %>%
+    mutate(across(everything(), ~round(., 2)))
+
+
+# ## This is a more advanced way to do both of the things we did earlier by in one code chunk
+# data %>%
+#   select(books_2023, enjoy_cooking, hrs_sleep) %>%
+#   summarize(across(c(books_2023, enjoy_cooking, hrs_sleep), 
+#                    list(mean = ~mean(., na.rm = TRUE), 
+#                         sd = ~round(sd(., na.rm = TRUE), 2))))
+
+
+```
+
+Then...
+
+Write a text paragraph that updates its numbers if we get new data. (HINT: using embedded code)
+
+### The summary paragraph:
+
+Out of the `r count(data)` responses we received, the average number of books people have read so far this 2023 was `r means_df[1,1]` books (*SD* = `r sd_df[1,1]`). Participants also reported sleeping `r means_df[1,3]` hours on average (*SD* = `r sd_df[1,3]`). In fact, the shortest reported number was `r min(data$hrs_sleep)` and the longest was `r max(data$hrs_sleep)` hours. Finally, when they were asked to report how much they enjoy cooking (1 = "hate it" to 10 = "love it"), the average score was `r means_df[1,2]` (*SD* = `r sd_df[1,2]`).
+
+## Let's visualize the frequency of chosen superpowers
+
+ggplot is based on the "grammar of graphics." A regular graph would normally need 3 main components:
+
+1. A dataset
+
+2. A coordinate system : describes how data coordinates are mapped to the plane of the graphic. Provides axis and grid lines to help read the graph. [the cartesian coordinate system is the default one]
+
+3. Geoms: this refers to what you actually see in the plot such as points, lines, polygons, bars, etc.
+
+this is usually the code for it:
+
+```{r eval=FALSE, echo = TRUE}
+ggplot(data, aes(x = height, y = weight, colour = age)) +
+  geom_point()
+```
+
+### Let's try our own graph for superpowers: Building a histogram
+
+```{r}
+ggplot(data, aes(x = superpower, colour = superpower, fill = superpower)) +
+  geom_bar()
+```
+
+### We could clean it a little bit
+
+```{r}
+ggplot(data, aes(x = superpower, colour = superpower, fill = superpower)) +
+  geom_bar(show.legend=FALSE) +
+  theme_minimal()
+```
+
+## Let's visualize 2 continuous variables and then separate them by the age_group
+### Scatterplot for 2 continuous variables (sleep + books)
+
+```{r}
+ggplot(data, aes(x = hrs_sleep, y = books_2023,colour = age_group)) +
+  geom_point() +
+  theme_minimal()
+```
+
+### Now by age groups
+
+```{r}
+ggplot(data, aes(x = hrs_sleep, y = books_2023, colour = age_group)) +
+  geom_point(show.legend=FALSE) +
+  theme_minimal() + 
+  facet_wrap(~age_group)+
+  labs(x = "Total Sleep Hrs", y = "Books Read so Far in 2023")
+```
+
+## After you clean your variables, you can export the new df as a csv or other type
+```{r eval=FALSE, echo = TRUE}
+write_csv(demo_data, "data/example_to_export.csv")
+```
+

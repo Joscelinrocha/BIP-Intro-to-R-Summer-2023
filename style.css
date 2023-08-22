@@ -62,7 +62,7 @@ a , a > code {
   font-size: 75px;
 }
 
-
+/*
 .remark-slide-content:after {
     content: "";
     position: absolute;
@@ -72,8 +72,9 @@ a , a > code {
     width: 70px;
     background-repeat: no-repeat;
     background-size: contain;
-    background-image: url("images/Joscelin_Rocha_Hidalgo_logo.png");
+    background-image: url("images/Transparent_Psy_Logo__Final.png");
 }
+*/
 
 .dk-section-title:after {
     content: "";

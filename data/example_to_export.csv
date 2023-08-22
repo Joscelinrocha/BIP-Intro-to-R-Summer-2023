@@ -1,0 +1,44 @@
+age_group,gender,state,race,latin_status
+18-24,Female,PA,Black/African American,No
+35-44,Prefer not to say,California,Black/African American,Yes
+18-24,Female,Arizona,Prefer not to say,No
+35-44,Female,TX,"White/Caucasian, Black/African American",Yes
+18-24,Male,Alabama,Black/African American,No
+18-24,Male,PA,Prefer not to say,Yes
+35-44,Prefer not to say,TX,Black/African American,No
+18-24,Male,California,Prefer not to say,Yes
+18-24,Female,NY,Black/African American,No
+35-44,Prefer not to say,NJ,"White/Caucasian, Black/African American",No
+18-24,Male,KY,Prefer not to say,Yes
+18-24,Female,California,White/Caucasian,No
+25-34,Male,KY,Black/African American,Yes
+25-34,Female,DC,White/Caucasian,No
+25-34,Male,Florida,White/Caucasian,No
+25-34,Female,PA,Prefer not to say,Yes
+25-34,Female,DC,"Native American/Alaska Native, White/Caucasian",No
+18-24,Female,DC,Prefer not to say,Yes
+25-34,Non-binary,Kentucky,White/Caucasian,No
+18-24,Male,NYC,Black/African American,No
+35-44,Male,NJ,"White/Caucasian, Black/African American",No
+18-24,Female,CT,"Black/African American, White/Caucasian",Yes
+25-34,Female,Ontario canada,Middle Eastern/North African,No
+18-24,Female,FL,Latina,Yes
+25-34,Female,Alabama,Prefer not to say,Prefer not to say
+18-24,Male,United States,Black/African American,No
+25-34,Female,New York,White/Caucasian,No
+25-34,Female,NJ,Asian,No
+25-34,Male,New Jersey,Black/African American,Prefer not to say
+18-24,Female,Maryland,Black/African American,No
+25-34,Non-binary,Depression,Asian,No
+18-24,Male,Maryland,Black/African American,No
+18-24,Female,Nevada,Asian,No
+25-34,Female,Massachusetts,"White/Caucasian,",Yes
+18-24,Female,Kentucky,Asian,No
+25-34,Female,Sindh,Asian,No
+18-24,Female,Haryana,Asian,No
+18-24,Female,Minnesota,Black/African American,No
+18-24,Female,NY,White/Caucasian,No
+18-24,Female,New York,Asian,No
+35-44,Female,Minnesota,White/Caucasian,No
+55-64,Female,California,Black/African American,No
+18-24,Female,IL,White/Caucasian,Yes
