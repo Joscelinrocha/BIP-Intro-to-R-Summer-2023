@@ -1,0 +1,952 @@
+---
+title: "BIP Intro To R Workshop"
+subtitle: "BIP Summer Series"
+author: "Dr. Joscelin Rocha-Hidalgo"
+output:
+  xaringan::moon_reader:
+    css: ["style.css", "default"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 16:9
+      beforeInit: "macros.js"
+---
+
+```{r child = "setup.Rmd"}
+```
+
+```{r packages, include = F, eval = T}
+library(tidyverse)
+
+# devtools::install_github("gadenbuie/countdown")
+library(countdown)
+```
+
+class: center, middle, inverse, dk-section-title
+
+# This workshop will be recorded 
+--
+
+### If you don't want your image or voice to be part of the recording:
+
+1. Keep your camera off
+1. Keep yourself muted and ask questions in the chat/Q&A box only
+
+---
+class: center, middle, inverse, dk-section-title
+
+## Fill out this quick survey to build our dataset
+![:scale 30%](images/qr_code_activity.png)
+
+`r countdown::countdown(minutes = 5)`
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Recording will start now!
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Agenda
+
+1. Logistics
+
+--
+
+1. Data Analysis Pipeline
+
+--
+
+1. Intro to R and Importing Datasets
+
+--
+
+1. Reproducibility & RMarkdown
+
+--
+
+1. Data Manipulation/Wrangling
+
+--
+
+1. Data Visualization
+
+---
+
+## Who am I?
+
+--
+
+.pull-left[
+
+![:scale 60%](images/Joscelin Rocha Hidalgo.JPG)]
+
+.pull-right[
+My name is Joscelin Rocha-Hidalgo. 
+
+I finished my Ph.D. at Georgetown University and currently working at Penn State University as a Post-Doctoral Scientist.
+
+Twitter/X: @JoscelinRocha
+
+email: JR1679@georgetown.edu
+]
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Logistics
+
+---
+## Feel Free to:
+.pull-left[
+
+Provide nonverbal feedback or raise your hand
+
+![:scale 90%](images/feedback.png)]
+
+--
+
+.pull-right[
+
+Ask any questions to the chat/Q&A box
+![:scale 80%](images/chat.png)]
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Data Analysis Pipeline
+
+---
+
+.center[![](images/data_analysis_pipeline.png)]
+
+From R for Data Science (https://r4ds.had.co.nz/introduction.html)
+
+---
+
+
+class: center, middle, inverse, dk-section-title
+
+# Introduction to R & Importing Datasets
+
+---
+
+
+.pull-left[
+**R**
+
+Programming language 
+
+![:scale 70%](images/R_logo.png)
+
+Besides the intuitiveness of this language, there is also a great community of folks using it for data science, and we are excited to welcome you all to the R community.
+]
+
+--
+
+.pull-right[
+**Rstudio**
+
+Interactive Development Environment (IDE)
+
+![:scale 50%](images/rstudio.png)
+
+You can think of RStudio as a sophisticated text editor for writing R code. You can run RStudio on Mac, Windows, or on a server.
+]
+
+---
+
+### Tour of RStudio
+
+.center[
+![](images/rstudio-panes.png)
+]
+
+---
+## File Types
+
+There are multiple files types you could create using the Rstudio interface
+
+.center[![:scale 70%](images/r_studio_file_types.png)]
+---
+
+## File Types
+
+But there are **two main file types** that you'll work with: 
+
+--
+
+.pull-left[
+**R scripts (.R)**
+
+Text is assumed to be executable R code unless you comment it (more on this soon)
+
+```{r}
+
+# This is a comment
+
+data <- read_csv("data.csv")
+
+```
+]
+
+--
+
+.pull-right[
+**RMarkdown files (.Rmd)**
+
+Text is assumed to be text unless you put it in a code chunk (more on this soon)
+]
+---
+
+## R Scripts
+
+
+Create new script file: File -> New File -> R Script
+
+![](images/new-script.gif)
+
+---
+
+
+## How to Run Code
+
+Run the code: 
+
+--
+
+control + enter on Windows,  
+
+--
+
+command + enter on Mac keystrokes or use Run button
+---
+
+## Comments
+
+Do them for others and for your future self. 
+
+```{r eval = F}
+
+# Show the first 5 rows of my data
+
+head(data, n = 5)
+
+```
+
+
+---
+## Install Packages
+
+The syntax to install packages is as follows. 
+
+```{r eval=F}
+install.packages("tidyverse")
+install.packages("skimr")
+```
+
+The package name must be in quotes.
+
+--
+
+.dk-highlight-box[
+Packages should be installed **once per computer**.
+]
+
+---
+## Another way to install packages
+.center[![](images/installing_packages_manually.gif)]
+---
+
+## Load Packages
+
+To load packages, use the following syntax:
+
+```{r eval = T}
+library(tidyverse)
+library(skimr)
+```
+
+--
+
+.dk-highlight-box[
+Packages should be loaded **once per session**. 
+]
+
+---
+
+
+Quick Activity:
+
+.center[# What Kind of File Type Do You Deal With the *Most*?]
+
+`r countdown::countdown(minutes = 2)`
+
+---
+## Import Data
+### ![:scale 10%](images/readr.png)CSV (Comma Separated Values) Files
+
+```{r echo = TRUE, eval = FALSE}
+
+# Using base R
+data <- read.csv("file.csv")
+
+# OR
+
+# Using the readr package (part of the tidyverse)
+library(readr)
+data <- read_csv("file.csv")
+
+```
+
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Let's explore this sintax together...
+This code construct is exceedingly common in R, so I want to spend a few minutes exploring it together
+
+
+---
+
+.center[![](images/function.png)]
+
+read_csv() is a function. Remember that functions are defined in packages. We loaded the Tidyverse package to be able to use the read_csv function. 
+---
+
+.center[![](images/argument.png)]
+
+- The input that goes into a function is called an argument. The argument to a function gets put in parentheses.
+
+- A function can have zero, one, or many arguments. If there is more than one argument, we use commas to separate them. We’ll see examples of that later.
+---
+
+.center[![](images/object.png)]
+
+- The read_csv function outputs a data frame (think table), but if we want to *capture* that data frame inside of a named object, we need to specify that explicitly.
+- It is a great idea to capture the output of a function in an object so it can be used as the input for other functions
+---
+
+.center[![](images/assignment.png)]
+
+- To put the output of the read_csv function into a named object, we use the assignment operator.
+- The assignment operator is a smaller-than sign followed by a dash or minus and looks kind of like an arrow pointing left. 
+---
+class: center, middle, inverse, dk-section-title
+
+# What questions do you have so far?
+`r countdown::countdown(minutes = 0, seconds = 10)`
+---
+
+### ![:scale 10%](images/readxl.png) Excel Files
+```{r echo = TRUE, eval = FALSE}
+# Using the readxl package (part of the tidyverse)
+library(readxl)
+
+data <- read_excel("file.xlsx")
+
+```
+
+---
+
+### ![:scale 10%](images/jsonlite.png) JSON (JavaScript Object Notation) Files
+
+```{r echo = TRUE, eval = FALSE}
+# Using the jsonlite package
+library(jsonlite)
+
+data <- fromJSON("file.json")
+
+```
+
+--
+
+### XML (eXtensible Markup Language) Files
+
+```{r echo = TRUE, eval = FALSE}
+# Using the XML package
+library(XML)
+
+data <- xmlParse("file.xml")
+
+```
+
+---
+
+###  ![:scale 10%](images/haven.png) SPSS Files
+
+```{r echo = TRUE, eval = FALSE}
+# Using the haven package (part of the tidyverse)
+library(haven)
+
+data <- read_sav("file.sav")
+
+```
+
+--
+
+### ![:scale 10%](images/haven.png) SAS Files
+
+```{r echo = TRUE, eval = FALSE}
+# Using the haven package (part of the tidyverse)
+library(haven)
+
+data <- read_sas("file.sas7bdat")
+
+```
+
+---
+
+### ![:scale 10%](images/haven.png) Stata Files
+
+```{r echo = TRUE, eval = FALSE}
+# Using the haven package (part of the tidyverse)
+library(haven)
+
+data <- read_dta("file.dta")
+
+```
+
+---
+
+### It can connect with multiple databases:
+![:scale 150%](images/databases.png)
+https://solutions.posit.co/connections/db/databases/
+---
+
+### SQLite Databases
+
+```{r echo = TRUE, eval = FALSE}
+# Using the DBI and RSQLite packages
+library(DBI)
+library(RSQLite)
+
+con <- dbConnect(RSQLite::SQLite(), "file.db")
+data <- dbGetQuery(con, "SELECT * FROM table_name")
+dbDisconnect(con)
+
+```
+
+---
+
+## R is Case Sensitive
+
+R is **case sensitive** so choose one of the following for all objects and **be consistent**.
+.pull-left[
+**Option**
+
+snake_case 
+
+camelCase
+
+periods.in.names
+]
+
+--
+
+.pull-right[
+
+**Example**
+
+student_data
+
+studentData
+
+student.data
+]
+
+---
+
+## Directories
+
+If the data file is in the working directory, you only need to specify its name.
+
+```{r}
+chds6162_data <- read_csv("chds6162_data.csv")
+```
+
+--
+
+If the data file is not in the working directory, you need to specify full path name.
+
+```{r echo=TRUE}
+chds6162_data <- read_csv("data/chds6162_data.csv")
+```
+
+--
+
+.dk-highlight-box[
+*Using an RStudio project sets your working directory to the folder where your project lives so you only need to specify the location relative to that*
+]
+
+---
+
+## Where Does our Data Live?
+
+Data we have imported is available in the environment/history pane.
+
+.center[
+![](images/rstudio-panes-highlight-environment.png)
+]
+
+---
+
+### ?function
+
+Use the ? to get help about anything you're confused about
+
+```{r}
+
+?read_csv
+
+```
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Recap
+---
+
+## Recap
+
+- **Packages** extend the functionality of R. They need to be installed once per computer and loaded each session.
+
+--
+
+- some Packages can be found in **CRAN (The Comprehensive R Archive Network)** and some need to be manually "activated" or "installed" to your device from github repos or other sites.
+
+--
+
+- **Functions** do stuff.  They accept **Arguments** to define parameters. We can store the output of functions in **Objects** using the **assignment operator** ( <- ).
+
+--
+
+- **Importing Data** is the first step data analysis pipeline.  **read_csv()** is a function from the **tidyverse** that we can use for importing data.
+
+---
+class: center, middle, inverse, dk-section-title
+
+# What questions do you have so far?
+`r countdown::countdown(minutes = 0, seconds = 10)`
+
+---
+class: center, middle, inverse, dk-section-title
+
+# Reproducibility
+
+---
+
+## Reproducibility & R
+
+- One of the most powerful aspects of working in the R environment is the ability to conduct reproducible data analyses and data cleaning (those analyses and processes that can be shared, revised, repurposed and reproduced) by others.
+
+--
+
+- **Point-and-click is not reproducible**...unless...the interactive tool you are using also records those actions (**explore: [JAMOVI](https://www.jamovi.org/) or [JASP](https://jasp-stats.org/)**)
+
+--
+
+### But it doesn't always help others...
+
+---
+
+## Sometimes (most times) it helps **YOU**
+
+Consider the following statements and ask yourself if they sound familiar:
+
+--
+
+- Can I redo the analysis from last month with this month’s data?
+
+--
+
+- Why do the data in Table X not seem to agree with Figure X?
+
+--
+
+- Why did I decide to omit these 10 rows from my analysis?
+
+--
+
+- Why did i recode these variables this way?
+
+--
+
+- Which tests did my PI/Supervisor suggest to run and which ones did I come up with instead?
+
+--
+
+.dk-highlight-box[
+**Your closest collaborator is YOU from last month or week. You can do your self a huge favor by using tools that promote reproducibility.]
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Reproducibility & RMarkdown
+
+---
+
+## RMarkdown (.rmd)
+
+.pull-left[![:scale 80%](images/markdown.png)]
+.pull-right[
+
+- R Markdown provides us with features and tools to tackle the reproducibility problem.
+
+- In R Markdown, we can craft computer code mixed in with narrative annotation that documents the purpose of the code and details about the decisions we made in our analysis.
+
+]
+
+---
+## RMarkdown (.rmd)
+
+.pull-left[![:scale 80%](images/markdown.png)]
+.pull-right[
+- R Markdown provides a lab notebook interface for analysis, visualization, and annotation of our work.
+
+- It is quickly becoming the gold standard for reproducible data analysis.
+
+- Today, I will teach you to use R Markdown and  **encourage you to continue using it consistently in your future work**. In fact, This is my strongest recommendation today.
+
+]
+
+---
+# RMarkdown Overview
+
+--
+
+Every RMarkdown document has the following:
+
+![](images/rmarkdown-overview.png)
+
+---
+
+# Or much easier put:
+
+![](images/rmakrdown_anatomy.png)
+---
+## Knitting (aka Export)
+![](images/knitting.png)
+---
+## Knitting (aka Export)
+.center[![:scale 70%](images/markdown_export.png)]
+
+In addition to HTML files, .rmd documents can be “knitted” into a number of additional formats including PDF, Microsoft Word, PowerPoint, and even interactive dashboards.
+
+---
+
+.center[![:scale 100%](images/knitted_doc.png)]
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# What questions do you have so far?
+`r countdown::countdown(minutes = 0, seconds = 10)`
+
+
+---
+## Anatomy of an RMarkdown Document
+
+--
+
+- The first is the **Header** or **YAML** which includes pieces like the name of the document, the document’s author, and the desired output format when the document is assembled.
+
+- Where you add title, author, date, output options, etc. 
+
+
+--
+
+- The second block is the **text**. R Markdown documents can be marked in ways that promote readability with various formatting styles.
+
+--
+
+- Finally, there are **code chunks**. Code chunks include R code (or python, ruby, etc.) that can be executed to output results.
+
+---
+## RMarkdown Documents have particular "rules" for how to format the Text sections
+
+
+.pull-left[
+**Markdown**
+
+```
+Text with **some words in bold** 
+and *some words in italics*
+
+
+```
+
+]
+
+--
+
+.pull-right[
+**Output**
+
+Text with **some words in bold** and *some words in italics*
+
+]
+
+
+---
+
+## Headers
+
+
+.pull-left[
+**Markdown**
+
+```
+
+
+# First-Level Header
+
+## Second-Level Header
+
+### Third-Level Subheader
+
+
+```
+]
+
+--
+
+.pull-right[
+**Output**
+
+# First-Level Header
+
+## Second-Level Header
+
+### Third-Level Subheader
+
+]
+
+
+
+---
+
+
+## Lists
+
+
+.pull-left[
+**Markdown**
+
+```
+
+- Unordered bulleted list item
+- Unordered bulleted list item
+
+
+1. Numbered list item
+1. Numbered list item
+```
+]
+
+--
+
+.pull-right[
+**Output**
+
+
+- Bulleted list item #1
+- Bulleted list item #2
+
+
+1. Numbered list item #1
+1. Numbered list item #2
+
+]
+
+
+---
+# Code Chunk
+
+
+They start with three backticks and {r} and end with three backticks. 
+
+.pull-left[
+
+
+![](images/chunk.png)
+]
+
+--
+
+.pull-right[
+
+![](images/my-chunk-plot.png)
+]
+
+
+
+---
+
+## Insert a Code Chunk: Button
+
+![](images/insert-code-chunk-animated.gif)
+
+---
+
+## Insert a Code Chunk: Keyboard Shortcut
+
+
+.pull-left[
+![](images/apple-logo.png)
+
+**Mac**
+
+*command+option+I*
+]
+
+.pull-right[
+![](images/windows-logo.png)
+
+**Windows**
+
+*control+alt+I*
+]
+
+--
+
+---
+
+## Chunk Options
+
+**Other options** that we won't discuss today:
+
+- **`warning`** (show any warnings that R throws)
+- **`message`** (show any messages that R sends)
+- **`fig.width`** (default figure width)
+- **`fig.height`** (default figure height)
+- **`echo`** (show the R code in the knitted report)
+- and many more ...
+
+
+---
+
+
+## Setup Code Chunk
+
+--
+
+A special code chunk with the text `setup` right after the `r`. 
+
+![](images/setup-code-chunk.png)
+
+--
+
+All chunk options can be set at the **global level** (in the setup code chunk) or at the **chunk level** (for individual chunks).
+
+--
+
+Options at the individual chunk level **override** global chunk options.
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# What questions do you have so far?
+`r countdown::countdown(minutes = 0, seconds = 10)`
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Data Manipulation
+
+---
+# Remember this slide at the begining of the workshop?
+### Fill out this quick survey to build our dataset
+![:scale 30%](images/qr_code_activity.png)
+
+---
+
+That's our dataset for today. It has 12 variables we could clean:
+
+![:scale 100%](images/data.png)
+
+---
+
+### We will use packages from Tidyverse
+.center[![:scale 70%](images/tidyverse_celestial.png)]
+
+---
+## Tidyverse Syntax
+
+
+
+```{r}
+data %>% 
+  tabyl(age, ed)
+
+```
+
+--
+
+- Did you notice I only referred to my dataframe once?
+
+--
+
+- The pipes! (%>%). They chain together a series of functions
+
+---
+
+class: center, middle
+
+## The pipe
+
+.center[![](images/conceptual-tidyverse-code.png)]
+
+---
+
+### The pipe
+
+I would read each pipe as "then." For example:
+
+```{r}
+data %>% 
+  filter(age < 25) %>% 
+  group_by(ed) %>% 
+  summarize(mean_gestation = mean(gestation, na.rm = TRUE))
+
+```
+
+--
+
+*Keyboard shortcuts to add a pipe:*
+
+- command-shift-M (Mac)
+
+- control-shift-M (Windows)
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# What questions do you have so far?
+`r countdown::countdown(minutes = 0, seconds = 10)`
+
+---
+
+class: center, middle, inverse, dk-section-title
+
+# Let's create our mini report!
+
+---
+
+
+
+

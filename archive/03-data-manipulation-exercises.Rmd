@@ -1,0 +1,185 @@
+---
+title: "Data Manipulation Exercises"
+author: "Joscelin Rocha Hidalgo"
+output: 
+    html_document:
+        css: slides/style.css
+        toc: true
+        toc_depth: 1
+        toc_float: true
+        df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Packages
+
+Load the `tidyverse` package and the `ggplot2` package.
+
+```{r}
+
+```
+
+# Import data: chds6162_data
+
+Import the chds6162_data to a dataframe called `data`. 
+
+```{r}
+
+```
+
+
+
+# select
+
+![](slides/images/select.png)
+
+Use `select` to show just the `marital` variable.
+
+```{r}
+
+```
+
+
+
+`select` for multiple variables:
+
+Use `select` to show `marital` and `ed` variables.
+
+```{r}
+
+```
+
+Use  `select`  for a range of columns. 
+
+`select` all the variables from `wt` to the end.
+
+
+```{r}
+# option one:
+
+
+
+# option 2:
+
+
+```
+
+Drop the `race` variable.
+
+```{r}
+
+```
+
+Drop the variables taht belonged to the father from `drace` to `dwt`
+
+
+```{r}
+
+
+
+```
+
+# mutate
+
+![](slides/images/mutate.png)
+
+Create a **new variable with a specific value**
+
+Create a new variable called `country` and make all responses to it "US".
+
+```{r}
+
+```
+
+
+Create a **new variable based on other variables**
+
+Create a new variable called `gestation_weeks` and calculate gestation lenght in weeks rather than days (try rounding this number to only 2 decimals). Remember that the `gestation` variable is a measure of the **gestation lenght** in days. Then `select`both variables. 
+
+```{r}
+
+```
+
+Change an **existing variable**
+
+Convert the `dwt` variable to kilos by dividing by 2.205 (it's in pounds now). Then, use `select` to show only the `dwt` variable.
+
+```{r}
+
+```
+
+
+# filter
+
+![](slides/images/filter.png)
+
+We use `filter` to choose a subset of cases.
+
+Use `filter` to keep only respondents who are divorced (`marital` = 3). 
+
+```{r}
+
+```
+
+Use `filter` to keep only respondents who are **not** divorced. 
+
+```{r}
+
+```
+
+
+Use `%in%` within the `filter` function to keep only those whose mothers' race was reported as white. In this dataset, values from 0 to 5 represent "white" under the `race`variable.
+
+```{r}
+
+```
+
+Create a chain that keeps only those are college grads (value of 5). Then, `filter` to keep only those who are not married. Finally, use `select` to show only the `ed` and `marital` variables.
+
+```{r}
+
+```
+
+
+# summarise
+
+![](slides/images/summarize.png)
+
+
+Get the mean, median, min, and max weight for the fathers `dwt`.
+
+```{r}
+
+```
+
+
+# group_by
+
+![](slides/images/group-by.png)
+
+Calculate the mean weight for fathers based on their education levels (`ded`variable has some NAs, don't forget to drop them!)
+
+```{r}
+
+```
+
+
+# Create a new data frame
+
+A new data frame called `mothers_below30` that:
+
+1. Uses `filter` to only include those age younger than 30
+2. Uses `mutate` to transform the `gestation` variable into weeks rather than days
+3. Uses `group_by` to create mom education groups
+4. Uses `summarise` to calculate a new variable called `mean_gestation_w`
+
+```{r}
+
+```
+
+
+

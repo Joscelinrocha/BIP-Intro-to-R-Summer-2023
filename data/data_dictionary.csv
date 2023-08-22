@@ -1,0 +1,14 @@
+variable,description
+timestamp,Timestamp
+books_2023,How many books have you read so far this 2023?
+enjoy_cooking,"On a scale of 1 to 10, how much do you enjoy cooking?"
+hrs_sleep,How many hours of sleep do you get on average per night?
+superpower,Which superpower would you choose?
+chosen_weekend_activity,"If traveling was not an issue (you can teleport anywhere in a blink) 
+What would be your preferred way to spend a free weekend?"
+latin_status,What's your least favorite type of movie?
+age_group,What is your age group?
+gender,What is your gender?
+state,Which state do you currently reside in?
+race,What is your racial background?
+latin_status,Are you Latino/a/e/x?

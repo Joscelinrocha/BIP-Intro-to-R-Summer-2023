@@ -1,0 +1,90 @@
+---
+title: "BIP Summer-Intro to R Workshop Activity"
+author: "Joscelin Rocha-Hidalgo"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE, warning=FALSE)
+```
+
+I am super excited to walk you through our activity report while I show you how you can use some functions and even create some basic visualizations!
+
+## How did I choose the questions?
+
+You may be wondering why I asked you the questions you saw in the online survey. I am a developmental scientist and most of my current research is with children between the ages of 4 and 6 years. Some of them helped me come up with some of the "funner" questions such as the ones asking about superpowers. And of course, I also chose some questions that could give me some variability of responses and one that is very poorly stated so we can do some data cleaning on its content.
+
+## Let's load some packages
+
+For the purposes of this workshop, most of our functions will come from packages part of the bigger package called *"Tidyverse"*.
+
+```{r}
+#Load the `tidyverse` package. 
+library(tidyverse)
+
+#Load the `janitor` package.
+library(janitor)
+```
+
+## Let's import our dataset
+
+In theory, we could have imported the googlesheets directly to R (definitely possible!) but for simplicity and lack of time, I downloaded the responses as a csv and saved them to our repo under the "data" folder.
+
+```{r }
+#Import the data.csv file into R and assign it to an object called "data"
+#FYI: you could have called it anything!
+data <- read_csv("data/data.csv")
+
+#After you run it, check the environment panel. It should be saved there!
+```
+## Let's clean & rename the variables
+The variables exported from the googlesheet are too long and we need to `rename()` them to shorter ones.
+```{r}
+#let's clean the variables names using the package `janitor()
+
+data <- data %>%
+  janitor::clean_names()
+
+## You can run this code to get the column names so it is easier to copy and paste 
+## them when changing them
+#colnames(data)  
+
+
+data <- data %>%
+  rename( "books_2023" = "how_many_books_have_you_read_so_far_this_2023",
+          "enjoy_cooking" = "on_a_scale_of_1_to_10_how_much_do_you_enjoy_cooking",
+          "hrs_sleep" = "how_many_hours_of_sleep_do_you_get_on_average_per_night",
+          "superpower" = "which_superpower_would_you_choose",
+          "chosen_weekend_activity" = "if_traveling_was_not_an_issue_you_can_teleport_anywhere_in_a_blink_what_would_be_your_preferred_way_to_spend_a_free_weekend",
+          "least_fav_movie" = "whats_your_least_favorite_type_of_movie",
+          "age_group" = "what_is_your_age_group",
+          "gender" = "what_is_your_gender",
+          "state" = "which_state_do_you_currently_reside_in",
+          "race" = "what_is_your_racial_background",
+          "latin_status" = "are_you_latino_a_e_x"  )
+```
+
+
+## Let's separate the demo questions and the "fun" questions into 2 new dataframes
+
+To separate the demo questions and the fun questions into 2 separate dfs, we will use the function `select()`.
+
+1.  Assign the fun questions to a df called "fun_data"
+
+2.  Assign the demo question to a df called "demo_data"
+```{r}
+# you can list them one by one
+data %>%
+  select(age_group,race)
+
+#another way:
+data %>%
+  select(age_group:latin_status)
+
+#another way
+data %>%
+  select(age_group:last_col())
+
+```
+
