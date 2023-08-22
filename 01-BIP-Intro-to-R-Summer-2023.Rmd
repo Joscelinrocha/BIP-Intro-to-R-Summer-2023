@@ -87,7 +87,7 @@ class: center, middle, inverse, dk-section-title
 
 .pull-left[
 
-![:scale 60%](images/Joscelin Rocha Hidalgo.JPG)]
+![:scale 60%](images/Joscelin Rocha Hidalgo.png)]
 
 .pull-right[
 My name is Joscelin Rocha-Hidalgo. 
